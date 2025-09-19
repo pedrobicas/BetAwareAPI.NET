@@ -1,0 +1,54 @@
+@baseUrl = https://localhost:7000
+@token = your-jwt-token-here
+
+### 🟢 Health Check
+GET {{baseUrl}}/v1/health
+Accept: application/json
+
+### 📝 Registrar Usuário
+POST {{baseUrl}}/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "nome": "Test User",
+  "cpf": "12345678901",
+  "cep": "12345678",
+  "endereco": "Rua Test, 123",
+  "senha": "123456",
+  "email": "test@test.com"
+}
+
+### 🔑 Login
+POST {{baseUrl}}/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "senha": "123456"
+}
+
+### 🎲 Criar Aposta
+POST {{baseUrl}}/v1/apostas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "categoria": "FUTEBOL",
+  "jogo": "Flamengo vs Vasco",
+  "valor": 100.50,
+  "resultado": "PENDENTE",
+  "data": "2024-12-01T15:00:00"
+}
+
+### 📋 Listar Apostas do Usuário
+GET {{baseUrl}}/v1/apostas
+Authorization: Bearer {{token}}
+
+### 📅 Filtrar Apostas por Período
+GET {{baseUrl}}/v1/apostas/periodo?inicio=2024-01-01T00:00:00&fim=2024-12-31T23:59:59
+Authorization: Bearer {{token}}
+
+### 👤 Filtrar Apostas do Usuário por Período
+GET {{baseUrl}}/v1/apostas/usuario/periodo?inicio=2024-01-01T00:00:00&fim=2024-12-31T23:59:59
+Authorization: Bearer {{token}}
