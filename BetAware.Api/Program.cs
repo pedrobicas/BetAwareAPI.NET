@@ -12,11 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Configure Entity Framework
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Configure Entity Framework with environment variables
+var connectionString = Environment.GetEnvironmentVariable("BETAWARE_CONNECTION_STRING") 
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Configure JWT Authentication
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseOracle(connectionString));
+
+// Configure JWT Authentication with environment variables
+var jwtKey = Environment.GetEnvironmentVariable("BETAWARE_JWT_KEY") 
+    ?? builder.Configuration["Jwt:Key"];
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -28,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
         };
     });
 
