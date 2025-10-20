@@ -41,12 +41,13 @@ public class AuthService : IAuthService
     public async Task RegisterAsync(RegisterRequest request)
     {
         // Verificar se já existe usuário com username, email ou CPF
+        // Usando FirstOrDefaultAsync em vez de AnyAsync para evitar problemas com literais booleanos no Oracle
         var existingUser = await _context.Usuarios
-            .AnyAsync(u => u.Username == request.Username || 
-                          u.Email == request.Email || 
-                          u.Cpf == request.Cpf);
+            .FirstOrDefaultAsync(u => u.Username == request.Username || 
+                                     u.Email == request.Email || 
+                                     u.Cpf == request.Cpf);
 
-        if (existingUser)
+        if (existingUser != null)
         {
             throw new InvalidOperationException("Usuário já existe com estes dados");
         }

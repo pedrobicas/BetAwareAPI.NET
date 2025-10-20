@@ -15,16 +15,16 @@ namespace BetAware.Data.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Cpf = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Cep = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    Endereco = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Senha = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Perfil = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "USER")
+                    Id = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
+                    Username = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
+                    Nome = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
+                    Cpf = table.Column<string>(type: "NVARCHAR2(11)", maxLength: 11, nullable: false),
+                    Cep = table.Column<string>(type: "NVARCHAR2(8)", maxLength: 8, nullable: false),
+                    Endereco = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: true),
+                    Senha = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
+                    Perfil = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false, defaultValue: "USER")
                 },
                 constraints: table =>
                 {
@@ -35,14 +35,14 @@ namespace BetAware.Data.Migrations
                 name: "Apostas",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<long>(type: "bigint", nullable: false),
-                    Categoria = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Jogo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Id = table.Column<long>(type: "NUMBER(19)", nullable: false)
+                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
+                    UsuarioId = table.Column<long>(type: "NUMBER(19)", nullable: false),
+                    Categoria = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
+                    Jogo = table.Column<string>(type: "NVARCHAR2(255)", maxLength: 255, nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Resultado = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "PENDENTE"),
-                    Data = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Resultado = table.Column<string>(type: "NVARCHAR2(50)", maxLength: 50, nullable: false, defaultValue: "PENDENTE"),
+                    Data = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
                 },
                 constraints: table =>
                 {
