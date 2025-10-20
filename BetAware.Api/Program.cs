@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,27 +47,39 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Configure Swagger/OpenAPI
+// Configurar Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "BetAware API", 
-        Version = "v1",
-        Description = "API para gerenciamento de apostas"
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BetAware API",
+        Version = "v1.0",
+        Description = "API completa para sistema de apostas esportivas com funcionalidades avançadas",
+        Contact = new OpenApiContact
+        {
+            Name = "Equipe BetAware",
+            Email = "contato@betaware.com",
+            Url = new Uri("https://github.com/betaware/api")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "MIT License",
+            Url = new Uri("https://opensource.org/licenses/MIT")
+        }
     });
-    
-    // JWT Bearer configuration for Swagger
+
+    // Configurar autenticação JWT no Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme.",
         Name = "Authorization",
-        In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer"
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Insira o token JWT no formato: Bearer {seu_token}"
     });
-    
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -78,15 +91,35 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
+
+    // Incluir comentários XML
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath);
+    }
+
+    // Configurar exemplos e schemas
+    c.EnableAnnotations();
+    c.UseInlineDefinitionsForEnums();
+    
+    // Configurar ordenação de endpoints
+    c.OrderActionsBy(apiDesc => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}");
 });
 
-// Register services
+// Registrar serviços
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApostaService, ApostaService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IExternalApiService, ExternalApiService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+// Registrar HttpClient para APIs externas
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
