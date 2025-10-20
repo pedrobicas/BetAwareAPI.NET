@@ -6,6 +6,20 @@ API RESTful completa para sistema de apostas esportivas desenvolvida em .NET 9, 
 
 ---
 
+## 👥 Integrantes
+
+Felipe Terra (RM: 99405)
+
+Pedro Bicas (RM: 99534)
+
+Gabriel Doms (RM: 98630)
+
+Lucas Vassão (RM: 98607)
+
+Bryan Willian (RM: 551305)
+
+---
+
 ## 🏗️ Arquitetura do Projeto
 
 A solução está organizada em múltiplos projetos seguindo o padrão de arquitetura em camadas:
@@ -250,15 +264,4 @@ GET /v1/external/cep/01310-100
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 👥 Integrantes
-
-Felipe Terra (RM: 99405)
-Pedro Bicas (RM: 99534)
-Gabriel Doms (RM: 98630)
-Lucas Vassão (RM: 98607)
-Bryan Willian (RM: 551305)
-
 ---
